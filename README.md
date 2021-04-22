@@ -1,6 +1,6 @@
 # This is a reference implementation of the Mind Mappings Framework. Mind Mappings performs a gradient-based mapping space search for hardware accelerators.
 
-## COMING SOON!
+## COMING SOON! (Expect to see it in a week, currently under approval process for open source release).
 
 Kartik  Hegde,  Po-An  Tsai,  Sitao  Huang,  Vikas  Chandra,  Angshuman Parashar, and Christopher W. Fletcher. 2021.
 *Mind Mappings: EnablingEfficient Algorithm-Accelerator Mapping Space Search.* 
