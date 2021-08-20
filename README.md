@@ -1,8 +1,12 @@
-> #### This is a reference implementation of the Mind Mappings Framework. Mind Mappings performs a gradient-based mapping space search for hardware accelerators.
+> ## This is a reference implementation of the Mind Mappings Framework. Mind Mappings performs a gradient-based mapping space search for hardware accelerators.
 
 ---
 
+### To Get started, follow the below steps:
+
+- Install the required packages using `pip install -r requirements.txt`
 - Install the Mind Mappings package: `pip install -e .`
+- Install PyTorch using instruction from [here](https://pytorch.org/get-started/locally/).
 - Install [Timeloop](https://github.com/NVlabs/timeloop). Follow instructions.
 - Update `parameters.py`:
   - Point to a temporary path and set `self.SCRATCH`
@@ -46,6 +50,6 @@ If you would like to reproduce the results from the paper, you can run:
 If this was useful in your research, please cite:
 
 ```Kartik  Hegde,  Po-An  Tsai,  Sitao  Huang,  Vikas  Chandra,  Angshuman Parashar, and Christopher W. Fletcher. 2021.
-*Mind Mappings: EnablingEfficient Algorithm-Accelerator Mapping Space Search.* 
-In Proceedings of the26th ACM International Conference on Architectural Support for ProgrammingLanguages and Operating Systems (ASPLOS ’21), 
+Mind Mappings: EnablingEfficient Algorithm-Accelerator Mapping Space Search.
+In Proceedings of the 26th ACM International Conference on Architectural Support for ProgrammingLanguages and Operating Systems (ASPLOS ’21), 
 April 19–23, 2021, Virtual, MI,USA.ACM, New York, NY, USA```

@@ -17,7 +17,7 @@ class Parameters:
 
         # Set a scratch path to write temporary files.
         # Tip: Use a fast memory to speed-up runs.
-        self.SCRATCH = '/scratch/kvhegde2/' # Create this path if does not exist
+        self.SCRATCH = None # SETME
 
         # Sets the cost metric
         self.COST_METRIC = metric #'energy'/'perf'/'EDP'
@@ -76,7 +76,7 @@ class Parameters:
         #####################################################################
 
         # Path to executable: Install timeloop and point to the timeloop directory.
-        self.TIMELOOP_PATH = '/home/kvhegde2/softwares/timeloop/'
+        self.TIMELOOP_PATH = None #SETME
 
         # Executable (timeloop-model)
         self.COSTMODEL_EXECUTABLE =  os.path.join(self.TIMELOOP_PATH ,'build/timeloop-model')
