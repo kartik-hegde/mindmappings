@@ -1,0 +1,212 @@
+architecture:
+  version: 0.2
+  
+  subtree:
+    - name: System
+      local:
+        - name: DRAM
+          class: DRAM
+          attributes:
+            width: 64
+            word-bits: 16
+            block-size: 4
+      subtree:
+        - name: Accelerator
+          attributes:
+            technology: 40nm
+          local:
+            - name: InputBuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16
+                vector-access-energy: 8.8
+            - name: WeightBuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16
+                vector-access-energy: 8.8
+            - name: PsumBuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16
+                vector-access-energy: 8.8
+          subtree:
+            - name: PE[0..256]
+              local:
+                - name: PsumRegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 16
+                    block-size: 1
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: WeightRegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 16
+                    block-size: 1
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: InputRegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 16
+                    block-size: 1
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: MACs
+                  class: intmac
+                  attributes:
+                    datawidth: 16
+
+mapping:
+  - target: DRAM
+    type: temporal
+    factors: N=16 K=512 C=256 P=56 Q=56 R=3 S=3
+    permutation: NKCPQRS
+  - permutation: NKCPQRS
+    type: temporal
+    target: PsumBuffer
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - permutation: NKCPQRS
+    type: temporal
+    target: WeightBuffer
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - permutation: NKCPQRS
+    type: temporal
+    target: InputBuffer
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - permutation: NKCPQRS
+    type: spatial
+    target: PsumBuffer
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - permutation: NKCPQRS
+    type: temporal
+    target: PsumRegFile
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - permutation: NKCPQRS
+    type: temporal
+    target: WeightRegFile
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - permutation: NKCPQRS
+    type: temporal
+    target: InputRegFile
+    factors: N=1 K=1 C=1 P=1 Q=1 R=1 S=1
+  - target: PsumRegFile
+    type: bypass
+    bypass:
+    - Inputs
+    - Weights
+    keep:
+    - Outputs
+  - target: WeightRegFile
+    type: bypass
+    bypass:
+    - Inputs
+    - Outputs
+    keep:
+    - Weights
+  - target: InputRegFile
+    type: bypass
+    bypass:
+    - Weights
+    - Outputs
+    keep:
+    - Inputs
+  - target: PsumBuffer
+    type: bypass
+    bypass:
+    - Inputs
+    - Weights
+    keep:
+    - Outputs
+  - target: WeightBuffer
+    type: bypass
+    bypass:
+    - Inputs
+    - Outputs
+    keep:
+    - Weights
+  - target: InputBuffer
+    type: bypass
+    bypass:
+    - Weights
+    - Outputs
+    keep:
+    - Inputs
+
+# Problem Description
+problem:
+  shape:
+    name: "CNN-Layer"
+    dimensions: [ C, K, R, S, N, P, Q ]
+    coefficients:
+    - name: Wstride
+      default: 1
+    - name: Hstride
+      default: 1
+    - name: Wdilation
+      default: 1
+    - name: Hdilation
+      default: 1
+      
+    data-spaces:
+    - name: Weights
+      projection:
+      - [ [C] ]
+      - [ [K] ]
+      - [ [R] ]
+      - [ [S] ]
+    - name: Inputs
+      projection:
+      - [ [N] ]
+      - [ [C] ]
+      - [ [R, Wdilation], [P, Wstride] ] # SOP form: R*Wdilation + P*Wstride
+      - [ [S, Hdilation], [Q, Hstride] ] # SOP form: S*Hdilation + Q*Hstride 
+    - name: Outputs
+      projection:
+      - [ [N] ]
+      - [ [K] ]
+      - [ [Q] ]
+      - [ [P] ]
+      read-write: True
+
+  instance:
+    C: 256
+    K: 512
+    R: 3
+    S: 3
+    P: 56
+    Q: 56
+    N: 16
+
+model:
+    auto_bypass_on_failure: true
+    out_prefix: 123

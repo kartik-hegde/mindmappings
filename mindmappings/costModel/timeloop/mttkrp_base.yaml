@@ -1,0 +1,249 @@
+architecture:
+  version: 0.2
+  
+  subtree:
+    - name: System
+      local:
+        - name: DRAM
+          class: DRAM
+          attributes:
+            width: 64
+            word-bits: 16
+            block-size: 4
+      subtree:
+        - name: Accelerator
+          attributes:
+            technology: 40nm
+          local:
+            - name: ABuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16
+                vector-access-energy: 8.8
+            - name: BBuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16
+                vector-access-energy: 8.8
+            - name: CBuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16
+                vector-access-energy: 8.8 
+            - name: DBuffer
+              class: SRAM
+              attributes:
+                depth: 262144
+                width: 64
+                block-size: 4
+                word-bits: 16
+                read_bandwidth: 16
+                write_bandwidth: 16                
+                vector-access-energy: 8.8 
+          subtree:
+            - name: PE[0..256]
+              local:
+                - name: ARegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 32
+                    block-size: 2
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: BRegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 32
+                    block-size: 2
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: CRegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 32
+                    block-size: 2
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: DRegFile
+                  class: SRAM
+                  attributes:
+                    depth: 1024
+                    width: 32
+                    block-size: 2
+                    word-bits: 16
+                    #meshX: 16
+                    read_bandwidth: 2
+                    write_bandwidth: 2
+                    vector-access-energy: 2.24
+                - name: MACs
+                  class: intmac
+                  attributes:
+                    datawidth: 16
+
+mapping:
+  - target: DRAM
+    type: temporal
+    factors: I=128 J=128 K=128 L=128
+    permutation: IJKL
+  - permutation: IJKL
+    type: temporal
+    target: ABuffer
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: BBuffer
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: CBuffer
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: DBuffer
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: spatial
+    target: DBuffer
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: ARegFile
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: BRegFile
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: CRegFile
+    factors: I=1 J=1 K=1 L=1
+  - permutation: IJKL
+    type: temporal
+    target: DRegFile
+    factors: I=1 J=1 K=1 L=1
+  - target: ARegFile
+    type: bypass
+    bypass:
+    - B
+    - C
+    - D
+    keep:
+    - A
+  - target: BRegFile
+    type: bypass
+    bypass:
+    - A
+    - C
+    - D
+    keep:
+    - B
+  - target: CRegFile
+    type: bypass
+    bypass:
+    - A
+    - B
+    - D
+    keep:
+    - C
+  - target: DRegFile
+    type: bypass
+    bypass:
+    - A
+    - B
+    - C
+    keep:
+    - D
+  - target: ABuffer
+    type: bypass
+    bypass:
+    - B
+    - C
+    - D
+    keep:
+    - A
+  - target: BBuffer
+    type: bypass
+    bypass:
+    - A
+    - C
+    - D
+    keep:
+    - B
+  - target: CBuffer
+    type: bypass
+    bypass:
+    - A
+    - B
+    - D
+    keep:
+    - C
+  - target: DBuffer
+    type: bypass
+    bypass:
+    - A
+    - B
+    - C
+    keep:
+    - D
+
+# Problem Description
+problem:
+  shape:
+    name: "MTTKRP"
+    dimensions: [ I, J, K, L]
+    data-spaces:
+      - name: B
+        projection:
+          - [ [I] ]
+          - [ [K] ]
+          - [ [L] ]
+      - name: C
+        projection:
+          - [ [J] ]
+          - [ [K] ]
+      - name: D
+        projection:
+          - [ [J] ]
+          - [ [L] ]
+      - name: A
+        projection:
+          - [ [I] ]
+          - [ [J] ]
+        read-write: True
+
+  instance:
+    I: 128
+    J: 128
+    K: 128
+    L: 128
+
+model:
+    auto_bypass_on_failure: true
+    out_prefix: 123
