@@ -66,7 +66,7 @@ class Parameters:
             sys.exit("Algorithm not supported")
 
         # Average Numbers of runs
-        self.AVG_ITERS = 50
+        self.AVG_ITERS = 100
 
         # Maximum Iterations
         self.MAXSTEPS = 5000 
@@ -102,9 +102,9 @@ class Parameters:
 
         # ------ Data generation ----------
         self.DATASET_UNPROCESSED_PATH = self.SCRATCH + '/timeloop/dataset_unprocessed_' + self.ALGORITHM + '/'
-        self.DATASET_NUMFILES = 10 # 100 # Total number files.
-        self.DATASET_NUMSAMPLES_FILE = 10# 100000 # This determines the size of each file. Dataset size = NUMFILES * NUMSAMPLES_FILE
-        self.DATASET_MAPPINGS_PER_PROBLEM = 1 # 500 # Set this to control the number of mappings per problem. (higher if each problem is complex)
+        self.DATASET_NUMFILES = 100 # Total number files.
+        self.DATASET_NUMSAMPLES_FILE = 100000 # This determines the size of each file. Dataset size = NUMFILES * NUMSAMPLES_FILE
+        self.DATASET_MAPPINGS_PER_PROBLEM = 500 # Set this to control the number of mappings per problem. (higher if each problem is complex)
 
         # ------- Data Post process --------
 
@@ -114,9 +114,9 @@ class Parameters:
         # Similarly, set NUM_THREADS to more if you want parallelism. Suggested to use 1 for better training.
         # NUM_OUTFILES controls the total number of output files. This is to be set based on your training data size.
         self.DATASET_PATH = self.SCRATCH + '/timeloop/dataset_' + self.ALGORITHM + '/'
-        self.DATASET_NUM_FILES_PER_THREAD = 10 # 100
+        self.DATASET_NUM_FILES_PER_THREAD = 100
         self.DATASET_NUM_THREADS = 1
-        self.DATASET_NUM_OUTFILES = 50
+        self.DATASET_NUM_OUTFILES = 100
 
         ## Train
         self.SURROGATE_TRAIN_EPOCHS = 100
