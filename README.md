@@ -4,7 +4,6 @@
 
 ### To Get started, follow the below steps:
 
-- Install the required packages using `pip install -r requirements.txt`
 - Install the Mind Mappings package: `pip install -e .`
 - Install PyTorch using instruction from [here](https://pytorch.org/get-started/locally/).
 - Install [Timeloop](https://github.com/NVlabs/timeloop). Follow instructions.
