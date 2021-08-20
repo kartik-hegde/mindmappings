@@ -23,6 +23,7 @@ Everything related to performing mapping space search is handles with `optimize.
 For convenience, two trained surrogate models are already provided for you (in `gradSearch/saved_models/`): `model_CNN-layer.save` and  `model_MTTKRP.save`. Each of them are specific to the architecture described in the paper and the related algorithm. In case, you want to target a different architecture/algorithm, they need to be re-trained (steps are provided later).
 
 To perform mapping space search, run:
+
     python3 optimize.py --command search --algorithm CNN-layer --problem 16 512 256 3 3 14 14 --maxsteps 1000
 
 `--algorithm` can be set to CNN-layer or MTTKRP, `--problem` should be set to the problem shape (`N C K R S P Q`/`I J K L`, see paper for description), `--maxsteps` can be set to the maximum number of steps you would like the search to run.
