@@ -30,6 +30,8 @@ To perform mapping space search, run:
 
 This prints out the best mapping and its predicted cost.
 
+- Check the `parameters.py` file, which controls most of the parameters for the run. Play around with them.
+
 ---
 
 In case, you would like to train a different surrogate model, follow the steps shown below:
@@ -38,6 +40,8 @@ In case, you would like to train a different surrogate model, follow the steps s
 2. **Process the Dataset**: `python3 optimize.py --command dataprocess --path <PATH> --algorithm <ALG> --costmodel <your new cost model>`
 3. **Train the surrogate model**: `python3 optimize.py --command train --path <PATH> --algorithm <ALG>`
 4. **Mapping Space Search**: `python3 optimize.py --command search --algorithm <ALG> --problem <DIMS> --maxsteps <STEPS>`
+
+**NOTE: To get the best out of mind mappings, you will need to tune search related parameters listed in `parameters.py` file.**
 
 ---
 
