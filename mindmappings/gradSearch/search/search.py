@@ -207,7 +207,7 @@ class Tuner:
                     reference_cost = self.costmodel.costFn(new_mapping, metric=self.parameters.COST_METRIC, threadID=threadID)[0]
                     optimize_time_series.append(reference_cost/oracle_cost)
                 if(benchmarking):
-                    benchmark_time_series.append(min(min(optimize_time_series),time.time()-start_time))
+                    benchmark_time_series.append(time.time()-start_time)
                     start_time = time.time()
                 # Prints for debug
                 # print("Accepted the new random mapping")
@@ -310,7 +310,7 @@ class Tuner:
             # For debug
             iterations += 1
 
-            if((iterations%100 == 0) and (not reproduce)):
+            if((iterations%100 == 0) and ((not reproduce) and (not benchmarking))):
                 print("Steps {0} complete".format(iterations))
 
             # If you are not running this to reproduce results, these can go away.
@@ -329,8 +329,8 @@ class Tuner:
             print("\n\nThread {0} Completed ...".format(threadID))
             return optimize_time_series
         elif(benchmarking):
-            print("\n\nThread {0} Completed ...".format(threadID))
-            return benchmark_time_series
+            print("\n\nBenchmarking Completed. Each Step took {0}s\n".format(np.mean(benchmark_time_series)))
+            return np.mean(benchmark_time_series)
         else:
             # Calculate the reference cost of the best mapping
             best_cost = self.costmodel.costFn(best_mapping, metric=self.parameters.COST_METRIC, threadID=threadID)[0]

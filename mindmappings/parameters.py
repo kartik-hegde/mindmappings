@@ -144,7 +144,7 @@ class Parameters:
         self.GRADSEARCH_LR_DECAYSTEP = 500
         self.GRADSEARCH_LR_DECAYFACTOR = 0.5
         self.OPTIMIZER = 'SGD'
-        self.MODEL_SAVE_PATH = self.GRADSEARCH_PATH + '/saved_models_final/'
+        self.MODEL_SAVE_PATH = self.GRADSEARCH_PATH + '/saved_models/'
         self.TRAINED_MODEL = 'model_'+ self.ALGORITHM + '.save'
         self.MEANSTD = 'mean_'+ self.ALGORITHM + '.pickle'
 

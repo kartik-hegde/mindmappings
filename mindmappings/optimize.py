@@ -80,6 +80,12 @@ def main(args):
         tuner = Tuner(costmodel, parameters=parameters, dataset_path=None, saved_model_path=args.path)
         tuner.search(maxsteps=args.maxsteps)
 
+    # Benchmark time per step
+    elif(args.command == 'benchmark'):
+        costmodel = Model(problem=args.problem, algorithm=args.algorithm, parameters=parameters)
+        tuner = Tuner(costmodel, parameters=parameters, dataset_path=None, saved_model_path=args.path)
+        tuner.search(maxsteps=args.maxsteps, benchmarking=True)
+
     # Reproduce the results from the paper
     elif(args.command == 'reproduce'):
         assert args.costmodel == 'timeloop', "Timeloop cost model was used in the paper."
@@ -128,7 +134,7 @@ def main(args):
         # average_cost = [p/oracle_costs[idx] for idx,p in enumerate(average_cost)]
 
         # Dump the data into a npy
-        np.save(outfile, [costArr, oracle_costs, average_cost, standard_deviation])
+        np.save(outfile, [average_cost, standard_deviation])
 
         print("Iso-iteration Runs Completed. Results written to {0}".format(parameters.GSEARCH_OUTPATH))
 
