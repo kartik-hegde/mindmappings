@@ -4,7 +4,7 @@
 
 ### To Get started, follow the below steps:
 
-- Install the Mind Mappings package: `pip install -e .`
+- Install the Mind Mappings package: `python3 -m pip install -e .`
 - Install PyTorch using instruction from [here](https://pytorch.org/get-started/locally/).
 - Install [Timeloop](https://github.com/NVlabs/timeloop). Follow instructions.
 - Update `parameters.py`:
@@ -14,9 +14,9 @@
 
 ---
 
-Now, everything is setup. Take some time to explore the mind mappings package. `costModel` directory has `models.py`, which describes the mandatory functions that any cost model should implement. `example/` directory contains a simple example cost model for finding minimum of a quadratic equation. `timeloop/` directory shows the mind mappings and time loop interface. 
+Now, everything is setup. Take some time to explore the mind mappings package. `costModel` directory has `models.py`, which describes the mandatory functions that any cost model should implement. `example/` directory contains a simple example cost model for finding minimum of a quadratic equation. `timeloop/` directory shows the mind mappings and timeloop interface. 
 
-Everything related to performing mapping space search is handles with `optimize.py`. As understood from the paper, here are two key phases:
+Everything related to performing mapping space search is handled with `optimize.py`. As understood from the paper, here are two key phases:
 1. **Train a Surrogate**
 2. **Use Surrogate for Search**
 
@@ -53,7 +53,4 @@ If you would like to reproduce the results from the paper, you can run:
 
 If this was useful in your research, please cite:
 
-```Kartik  Hegde,  Po-An  Tsai,  Sitao  Huang,  Vikas  Chandra,  Angshuman Parashar, and Christopher W. Fletcher. 2021.
-Mind Mappings: EnablingEfficient Algorithm-Accelerator Mapping Space Search.
-In Proceedings of the 26th ACM International Conference on Architectural Support for ProgrammingLanguages and Operating Systems (ASPLOS ’21), 
-April 19–23, 2021, Virtual, MI,USA.ACM, New York, NY, USA```
+```Hegde, Kartik, Po-An Tsai, Sitao Huang, Vikas Chandra, Angshuman Parashar, and Christopher W. Fletcher. "Mind mappings: enabling efficient algorithm-accelerator mapping space search." In Proceedings of the 26th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, pp. 943-958. 2021.```
